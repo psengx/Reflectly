@@ -1,5 +1,6 @@
 using Application.Interfaces.Repositories;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories;
 
@@ -9,5 +10,11 @@ public class TemplateRepository(ApplicationContext context) : ITemplateRepositor
     {
         await context.Templates.AddAsync(template);
         return template;
+    }
+
+    public async Task<List<TemplateEntity>> GetAllTemplatesAsync()
+    {
+        List<TemplateEntity> templates = await context.Templates.ToListAsync();
+        return templates;
     }
 }

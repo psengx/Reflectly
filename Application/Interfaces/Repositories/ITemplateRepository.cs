@@ -5,4 +5,5 @@ namespace Application.Interfaces.Repositories;
 public interface ITemplateRepository
 {
     Task<TemplateEntity> CreateTemplateAsync(TemplateEntity template);
+    Task<List<TemplateEntity>> GetAllTemplatesAsync();
 }
