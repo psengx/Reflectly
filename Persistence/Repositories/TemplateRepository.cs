@@ -14,11 +14,15 @@ public class TemplateRepository(ApplicationContext context) : ITemplateRepositor
 
     public async Task<List<TemplateEntity>> GetAllTemplatesAsync()
     {
-        return await context.Templates.ToListAsync();
+        return await context.Templates
+            .Include(t => t.Fields)
+            .ToListAsync();
     }
 
     public async Task<TemplateEntity?> GetTemplateByIdAsync(Guid id)
     {
-        return await context.Templates.FirstOrDefaultAsync(t => t.Id == id);
+        return await context.Templates
+            .Include(t => t.Fields)
+            .FirstOrDefaultAsync(t => t.Id == id);
     }
 }
