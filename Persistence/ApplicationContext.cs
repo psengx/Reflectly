@@ -24,6 +24,10 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<EntryEntity>()
             .Property(e => e.Answers)
             .HasColumnType("jsonb");
+        
+        modelBuilder.Entity<EntryEntity>()
+            .Property(e => e.FieldDefinitionSnapshot)
+            .HasColumnType("jsonb");
 
         modelBuilder.Entity<TemplateFieldEntity>()
             .Property(e => e.Settings)
