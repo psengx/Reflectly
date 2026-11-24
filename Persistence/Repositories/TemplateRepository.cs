@@ -14,7 +14,11 @@ public class TemplateRepository(ApplicationContext context) : ITemplateRepositor
 
     public async Task<List<TemplateEntity>> GetAllTemplatesAsync()
     {
-        List<TemplateEntity> templates = await context.Templates.ToListAsync();
-        return templates;
+        return await context.Templates.ToListAsync();
+    }
+
+    public async Task<TemplateEntity?> GetTemplateByIdAsync(Guid id)
+    {
+        return await context.Templates.FirstOrDefaultAsync(t => t.Id == id);
     }
 }

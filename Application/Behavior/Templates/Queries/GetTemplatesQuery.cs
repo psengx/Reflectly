@@ -10,7 +10,6 @@ public class GetAllTemplatesQueryHandler(ITemplateRepository templateRepository)
 {
     public async Task<List<TemplateEntity>> Handle(GetAllTemplatesQuery request, CancellationToken cancellationToken)
     {
-        List<TemplateEntity> templates = await templateRepository.GetAllTemplatesAsync();
-        return templates;
+        return await templateRepository.GetAllTemplatesAsync();
     }
 }

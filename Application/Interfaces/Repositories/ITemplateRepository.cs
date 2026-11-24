@@ -6,4 +6,5 @@ public interface ITemplateRepository
 {
     Task<TemplateEntity> CreateTemplateAsync(TemplateEntity template);
     Task<List<TemplateEntity>> GetAllTemplatesAsync();
+    Task<TemplateEntity?> GetTemplateByIdAsync(Guid id);
 }
