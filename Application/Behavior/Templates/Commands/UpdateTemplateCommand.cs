@@ -30,7 +30,7 @@ public class UpdateTemplateCommandHandler(
         {
             TemplateFieldEntity fieldEntity = new()
             {
-                Id = Guid.NewGuid(),
+                Id = field.Id ?? Guid.NewGuid(),
                 TemplateId = template.Id,
                 Name = field.Name,
                 FieldType = field.FieldType,
