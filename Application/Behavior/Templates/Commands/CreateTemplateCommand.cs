@@ -8,7 +8,7 @@ namespace Application.Behavior.Templates.Commands;
 public class CreateTemplateCommand : IRequest<Guid>
 {
     public string Name { get; set; }
-    public List<TemplateFieldToCreateDto> Fields { get; set; }
+    public List<TemplateFieldToCreateOrUpdateDto> Fields { get; set; }
 }
 
 public class CreateTemplateCommandHandler(
@@ -24,7 +24,7 @@ public class CreateTemplateCommandHandler(
             CreatedAt = DateTime.UtcNow,
             IsArchived = false
         };
-        foreach (TemplateFieldToCreateDto field in request.Fields)
+        foreach (TemplateFieldToCreateOrUpdateDto field in request.Fields)
         {
             TemplateFieldEntity fieldEntity = new()
             {

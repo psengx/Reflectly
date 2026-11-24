@@ -2,7 +2,7 @@ using Domain.Models;
 
 namespace Application.DTO;
 
-public class TemplateFieldToCreateDto
+public class TemplateFieldToCreateOrUpdateDto
 {
     public string Name { get; set; }
     public FieldType FieldType { get; set; }
