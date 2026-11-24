@@ -1,5 +1,6 @@
 using Application.Interfaces.Repositories;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Behavior.Templates.Commands;
@@ -22,5 +23,16 @@ public class ArchiveTemplateCommandHandler(
         template.IsArchived = true;
         await unitOfWork.SaveChangesAsync();
         return true;
+    }
+}
+
+public class ArchiveTemplateCommandValidator
+    : AbstractValidator<ArchiveTemplateCommand>
+{
+    public ArchiveTemplateCommandValidator()
+    {
+        RuleFor(x => x.Id)
+            .NotEmpty()
+            .WithMessage("Не указан идентификатор шаблона.");
     }
 }
