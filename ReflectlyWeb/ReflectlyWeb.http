@@ -1,0 +1,6 @@
+@ReflectlyWeb_HostAddress = http://localhost:5008
+
+GET {{ReflectlyWeb_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
