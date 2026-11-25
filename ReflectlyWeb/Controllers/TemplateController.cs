@@ -1,4 +1,6 @@
+using System.Net;
 using Application.Behavior.Templates.Commands;
+using Application.Behavior.Templates.Queries;
 using Domain.Entities;
 using Mapster;
 using MediatR;
@@ -23,5 +25,22 @@ public class TemplateController(IMediator mediator) : ControllerBase
         TemplateEntity result = await mediator.Send(command);
         
         return result.Adapt<TemplateDto>();
+    }
+
+    [HttpGet]
+    public async Task<List<TemplateDto>> GetAllTemplates()
+    {
+        GetAllTemplatesQuery query = new();
+        List<TemplateEntity> result = await mediator.Send(query);
+        return result.Adapt<List<TemplateDto>>();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TemplateDto>> GetTemplateById([FromRoute] Guid id)
+    {
+        GetTemplateByIdQuery query = new() { Id = id };
+        TemplateEntity? result = await mediator.Send(query);
+        
+        return result == null ? NotFound() : result.Adapt<TemplateDto>();
     }
 }
