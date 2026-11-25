@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Behavior.Templates.Commands;
 
-public class CreateTemplateCommand : IRequest<Guid>
+public class CreateTemplateCommand : IRequest<TemplateEntity>
 {
     public string Name { get; set; }
     public List<TemplateFieldToCreateOrUpdateDto> Fields { get; set; }
@@ -14,9 +14,9 @@ public class CreateTemplateCommand : IRequest<Guid>
 
 public class CreateTemplateCommandHandler(
     ITemplateRepository templateRepository,
-    IUnitOfWork unitOfWork) : IRequestHandler<CreateTemplateCommand, Guid>
+    IUnitOfWork unitOfWork) : IRequestHandler<CreateTemplateCommand, TemplateEntity>
 {
-    public async Task<Guid> Handle(CreateTemplateCommand request, CancellationToken cancellationToken)
+    public async Task<TemplateEntity> Handle(CreateTemplateCommand request, CancellationToken cancellationToken)
     {
         TemplateEntity template = new()
         {
@@ -43,7 +43,7 @@ public class CreateTemplateCommandHandler(
         await templateRepository.CreateTemplateAsync(template);
         await unitOfWork.SaveChangesAsync();
         
-        return template.Id;
+        return template;
     }
 }
 public class CreateTemplateCommandValidator
