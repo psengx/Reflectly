@@ -57,4 +57,12 @@ public class TemplateController(IMediator mediator) : ControllerBase
         
         return result == null ? NotFound() : result.Adapt<TemplateDto>();
     }
+
+    [HttpPut("{id}/archive")]
+    public async Task<ActionResult<bool>> ArchiveTemplate([FromRoute] Guid id)
+    {
+        ArchiveTemplateCommand command = new() { Id = id };
+        bool result = await mediator.Send(command);
+        return result ?  Ok() : NotFound();
+    }
 }
