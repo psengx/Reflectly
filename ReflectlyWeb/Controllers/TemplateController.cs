@@ -43,4 +43,18 @@ public class TemplateController(IMediator mediator) : ControllerBase
         
         return result == null ? NotFound() : result.Adapt<TemplateDto>();
     }
+
+    [HttpPut("{id}/update")]
+    public async Task<ActionResult<TemplateDto>> UpdateTemplate([FromRoute] Guid id, [FromBody] TemplateToCreateOrUpdateDto dto)
+    {
+        UpdateTemplateCommand command = new()
+        {
+            Id = id,
+            Name = dto.Name,
+            Fields = dto.Fields
+        };
+        TemplateEntity? result = await mediator.Send(command);
+        
+        return result == null ? NotFound() : result.Adapt<TemplateDto>();
+    }
 }
