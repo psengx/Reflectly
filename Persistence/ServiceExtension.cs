@@ -1,6 +1,8 @@
+using Application.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Repositories;
 
 namespace Persistence;
 
@@ -11,7 +13,8 @@ public static class ServiceExtension
         services.AddDbContext<ApplicationContext>(options =>
             options.UseNpgsql(configuration.GetSection("ConnectionStrings").GetSection("PostgreSql").Value)
         );
-
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ITemplateRepository, TemplateRepository>();
         return services;
     }
 
