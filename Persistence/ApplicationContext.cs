@@ -20,6 +20,9 @@ public class ApplicationContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<TemplateFieldEntity>()
+            .Property(u => u.FieldType)
+            .HasConversion<string>();
 
         modelBuilder.Entity<EntryEntity>()
             .Property(e => e.Answers)
