@@ -24,21 +24,45 @@ public class UpdateTemplateCommandHandler(
             return null;
         
         template.Name = request.Name;
-        template.Fields.Clear();
-        
+        HashSet<Guid> incomingIds = request.Fields
+            .Where(f => f.Id.HasValue)
+            .Select(f => f.Id!.Value)
+            .ToHashSet();
+
+        List<TemplateFieldEntity> fieldsToRemove = template.Fields
+            .Where(f => !incomingIds.Contains(f.Id))
+            .ToList();
+
+        foreach (TemplateFieldEntity fieldToRemove in fieldsToRemove)
+        {
+            template.Fields.Remove(fieldToRemove);
+        }
+
         foreach (TemplateFieldToCreateOrUpdateDto field in request.Fields)
         {
-            TemplateFieldEntity fieldEntity = new()
+            if (field.Id.HasValue)
             {
-                Id = field.Id ?? Guid.NewGuid(),
-                TemplateId = template.Id,
-                Name = field.Name,
-                FieldType = field.FieldType,
-                IsRequired = field.IsRequired,
-                Order = field.Order,
-                Settings = field.Settings
-            };
-            template.Fields.Add(fieldEntity);
+                TemplateFieldEntity existingField = template.Fields.FirstOrDefault(x => x.Id == field.Id.Value);
+                if (existingField != null)
+                {
+                    existingField.Name = field.Name;
+                    existingField.FieldType = field.FieldType;
+                    existingField.IsRequired = field.IsRequired;
+                    existingField.Order = field.Order;
+                    existingField.Settings = field.Settings;
+                }
+            }
+            else
+            {
+                template.Fields.Add(new TemplateFieldEntity
+                {
+                    Name = field.Name,
+                    FieldType = field.FieldType,
+                    IsRequired = field.IsRequired,
+                    Order = field.Order,
+                    Settings = field.Settings
+                });
+            }
         }
         
         await unitOfWork.SaveChangesAsync();
